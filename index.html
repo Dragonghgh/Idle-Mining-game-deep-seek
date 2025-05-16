@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Miner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+        }
+        .resource {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .upgrade {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e9f7ef;
+            border-radius: 5px;
+            border: 1px solid #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Idle Miner</h1>
+        
+        <div class="resource">
+            <h2>Gold: <span id="gold">0</span></h2>
+            <button id="mineGold">Mine Gold</button>
+            <p>Gold per click: <span id="goldPerClick">1</span></p>
+        </div>
+        
+        <div class="resource">
+            <h3>Workers: <span id="workers">0</span></h3>
+            <button id="hireWorker">Hire Worker (Cost: <span id="workerCost">10</span> gold)</button>
+            <p>Gold per second: <span id="goldPerSecond">0</span></p>
+        </div>
+        
+        <div class="upgrade">
+            <h3>Upgrades</h3>
+            <button id="upgradePickaxe">Upgrade Pickaxe (Cost: <span id="pickaxeCost">50</span> gold)</button>
+            <p>Current level: <span id="pickaxeLevel">1</span></p>
+        </div>
+        
+        <div class="upgrade">
+            <button id="upgradeWorker">Upgrade Workers (Cost: <span id="workerUpgradeCost">100</span> gold)</button>
+            <p>Worker efficiency: <span id="workerEfficiency">1</span>x</p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
