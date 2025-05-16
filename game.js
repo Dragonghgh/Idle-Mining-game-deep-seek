@@ -1,4 +1,4 @@
-// Game state
+// Game state with mining theme
 let game = {
     gold: 0,
     goldPerClick: 1,
@@ -8,20 +8,28 @@ let game = {
     workerEfficiency: 1,
     workerUpgradeCost: 100,
     pickaxeLevel: 1,
-    pickaxeCost: 50
+    pickaxeCost: 50,
+    lastUpdate: Date.now()
 };
 
 // Load game from localStorage
 function loadGame() {
     const savedGame = localStorage.getItem('idleMinerSave');
     if (savedGame) {
-        game = JSON.parse(savedGame);
+        const parsed = JSON.parse(savedGame);
+        // Handle offline progress
+        if (parsed.lastUpdate) {
+            const seconds = (Date.now() - parsed.lastUpdate) / 1000;
+            parsed.gold += parsed.goldPerSecond * seconds;
+        }
+        game = parsed;
         updateUI();
     }
 }
 
 // Save game to localStorage
 function saveGame() {
+    game.lastUpdate = Date.now();
     localStorage.setItem('idleMinerSave', JSON.stringify(game));
 }
 
@@ -29,7 +37,7 @@ function saveGame() {
 function updateUI() {
     document.getElementById('gold').textContent = Math.floor(game.gold);
     document.getElementById('goldPerClick').textContent = game.goldPerClick;
-    document.getElementById('goldPerSecond').textContent = game.goldPerSecond;
+    document.getElementById('goldPerSecond').textContent = game.goldPerSecond.toFixed(1);
     document.getElementById('workers').textContent = game.workers;
     document.getElementById('workerCost').textContent = game.workerCost;
     document.getElementById('workerEfficiency').textContent = game.workerEfficiency;
@@ -45,18 +53,29 @@ function updateUI() {
 
 // Game loop - runs every second
 function gameLoop() {
+    const now = Date.now();
+    const delta = (now - game.lastUpdate) / 1000;
+    game.lastUpdate = now;
+    
     // Add passive gold from workers
     if (game.workers > 0) {
-        game.gold += game.goldPerSecond;
+        game.gold += game.goldPerSecond * delta;
         updateUI();
     }
     
     saveGame();
+    requestAnimationFrame(gameLoop);
 }
 
-// Event listeners
+// Event listeners with mining effects
 document.getElementById('mineGold').addEventListener('click', () => {
     game.gold += game.goldPerClick;
+    // Add visual feedback
+    const btn = document.getElementById('mineGold');
+    btn.textContent = '⛏️ Mining...';
+    setTimeout(() => {
+        btn.textContent = '⛏️ Mine Gold';
+    }, 200);
     updateUI();
 });
 
@@ -92,4 +111,11 @@ document.getElementById('upgradeWorker').addEventListener('click', () => {
 
 // Initialize game
 loadGame();
-setInterval(gameLoop, 1000);
+requestAnimationFrame(gameLoop);
+
+// Prevent zooming on mobile
+document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
