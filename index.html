@@ -2,74 +2,132 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Idle Miner</title>
     <style>
+        :root {
+            --rock-color: #4a3c30;
+            --gold-color: #ffd700;
+            --dark-gold: #daa520;
+            --coal-color: #333333;
+            --mine-bg: #2a2118;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: var(--mine-bg);
+            color: white;
+            touch-action: manipulation;
         }
+        
         .container {
-            background-color: white;
+            background-color: var(--rock-color);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border: 3px solid var(--dark-gold);
         }
+        
+        h1 {
+            color: var(--gold-color);
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid var(--dark-gold);
+            padding-bottom: 10px;
+        }
+        
         button {
-            padding: 10px 15px;
-            margin: 5px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 12px 18px;
+            margin: 8px 5px;
+            background-color: var(--dark-gold);
+            color: #333;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #8b6914;
+            transition: all 0.1s;
+            width: 100%;
         }
+        
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #8b6914;
+        }
+        
         button:disabled {
-            background-color: #cccccc;
+            background-color: #5a5a5a;
+            color: #999;
+            box-shadow: 0 4px 0 #333;
         }
+        
         .resource {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid var(--dark-gold);
         }
+        
         .upgrade {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #e9f7ef;
-            border-radius: 5px;
-            border: 1px solid #d4edda;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(74, 60, 48, 0.7);
+            border-radius: 8px;
+            border: 1px solid var(--gold-color);
+        }
+        
+        .counter {
+            font-size: 1.2em;
+            color: var(--gold-color);
+            font-weight: bold;
+        }
+        
+        .cost {
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Idle Miner</h1>
+        <h1>⛏️ Idle Miner ⛏️</h1>
         
         <div class="resource">
-            <h2>Gold: <span id="gold">0</span></h2>
-            <button id="mineGold">Mine Gold</button>
-            <p>Gold per click: <span id="goldPerClick">1</span></p>
+            <h2>Gold: <span id="gold" class="counter">0</span></h2>
+            <button id="mineGold">⛏️ Mine Gold</button>
+            <p>Gold per click: <span id="goldPerClick" class="counter">1</span></p>
         </div>
         
         <div class="resource">
-            <h3>Workers: <span id="workers">0</span></h3>
-            <button id="hireWorker">Hire Worker (Cost: <span id="workerCost">10</span> gold)</button>
-            <p>Gold per second: <span id="goldPerSecond">0</span></p>
+            <h3>⛑️ Miners: <span id="workers" class="counter">0</span></h3>
+            <button id="hireWorker">Hire Miner (<span class="cost">Cost: <span id="workerCost">10</span> gold</span>)</button>
+            <p>Gold per second: <span id="goldPerSecond" class="counter">0</span></p>
         </div>
         
         <div class="upgrade">
-            <h3>Upgrades</h3>
-            <button id="upgradePickaxe">Upgrade Pickaxe (Cost: <span id="pickaxeCost">50</span> gold)</button>
-            <p>Current level: <span id="pickaxeLevel">1</span></p>
+            <h3>🔧 Upgrades</h3>
+            <button id="upgradePickaxe">Upgrade Pickaxe (<span class="cost">Cost: <span id="pickaxeCost">50</span> gold</span>)</button>
+            <p>Current level: <span id="pickaxeLevel" class="counter">1</span></p>
         </div>
         
         <div class="upgrade">
-            <button id="upgradeWorker">Upgrade Workers (Cost: <span id="workerUpgradeCost">100</span> gold)</button>
-            <p>Worker efficiency: <span id="workerEfficiency">1</span>x</p>
+            <button id="upgradeWorker">Train Miners (<span class="cost">Cost: <span id="workerUpgradeCost">100</span> gold</span>)</button>
+            <p>Miner efficiency: <span id="workerEfficiency" class="counter">1</span>x</p>
         </div>
     </div>
 
